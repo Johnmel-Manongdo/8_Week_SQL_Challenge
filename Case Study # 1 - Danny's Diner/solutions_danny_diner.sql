@@ -71,9 +71,9 @@ WITH order_info AS (
         menu.product_name,
         COUNT(sales.product_id) AS total_count,
         DENSE_RANK() OVER(PARTITION BY sales.customer_id ORDER BY COUNT(sales.customer_id) DESC) AS ranking
-  FROM sales
-  INNER JOIN menu ON sales.product_id = menu.product_id
-  GROUP BY sales.customer_id, menu.product_name
+    FROM sales
+    INNER JOIN menu ON sales.product_id = menu.product_id
+    GROUP BY sales.customer_id, menu.product_name
 )
 	
 SELECT 
@@ -154,8 +154,8 @@ WITH cte_points AS (
             WHEN menu.product_name = "sushi" THEN (menu.price * 10) * 2
             ELSE menu.price * 10
 	END AS points
-FROM sales
-INNER JOIN menu ON sales.product_id = menu.product_id
+    FROM sales
+    INNER JOIN menu ON sales.product_id = menu.product_id
 )
 
 SELECT 
@@ -201,7 +201,8 @@ SELECT
     menu.price,
     CASE
         WHEN sales.order_date >= members.join_date THEN 'Y'
-        ELSE 'N' END AS member
+        ELSE 'N' 
+    END AS member
 FROM sales
 INNER JOIN menu ON sales.product_id = menu.product_id
 LEFT JOIN members ON sales.customer_id = members.customer_id
@@ -219,10 +220,10 @@ WITH cte_ranking AS (
             WHEN sales.order_date >= members.join_date THEN 'Y'
             ELSE 'N' 
         END AS member
-FROM sales
-INNER JOIN menu ON sales.product_id = menu.product_id
-LEFT JOIN members ON sales.customer_id = members.customer_id
-ORDER BY sales.customer_id, sales.order_date
+    FROM sales
+    INNER JOIN menu ON sales.product_id = menu.product_id
+    LEFT JOIN members ON sales.customer_id = members.customer_id
+    ORDER BY sales.customer_id, sales.order_date
 )
 
 SELECT 
